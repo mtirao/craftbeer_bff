@@ -7,6 +7,9 @@ defmodule CraftbeerBffWeb.Router do
 
   scope "/api", CraftbeerBffWeb do
     pipe_through :api
+
+    get "/recipe", RecipeController, :index
+
   end
 
   # Enables LiveDashboard only for development
