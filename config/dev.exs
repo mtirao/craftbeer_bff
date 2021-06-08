@@ -4,7 +4,7 @@ use Mix.Config
 config :craftbeer_bff, CraftbeerBff.Repo,
   username: "craftbeer",
   password: "craftbeer",
-  database: "craftbeer_bff_dev",
+  database: "craftbeer_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
