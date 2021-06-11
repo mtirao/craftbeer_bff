@@ -10,6 +10,13 @@ defmodule CraftbeerBffWeb.Router do
 
     get "/recipe", RecipeController, :index
 
+    get "/recipe/:recipe_id/stages", StageController, :index
+
+    post "/recipe/start/:recipe_id", RecipeController, :create
+
+    post "/recipe/:recipe_id/stage/start/:stage_id", StageController, :create
+
+
   end
 
   # Enables LiveDashboard only for development

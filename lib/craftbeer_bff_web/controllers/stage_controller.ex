@@ -1,17 +1,17 @@
-defmodule CraftbeerBffWeb.RecipeController do
+defmodule CraftbeerBffWeb.StageController do
   use CraftbeerBffWeb, :controller
 
   require Logger
 
-  def index(conn, _params) do
-    url = "http://localhost:3000/craftbeer/recipes"
+  def index(conn, %{"recipe_id" => recipe_id}) do
+    url = "http://localhost:3000/craftbeer/recipe/#{recipe_id}/stages"
 
 
     case HTTPoison.get(url) do
       {:ok, %{status_code: 200, body: body}} ->
         json = Jason.decode!(body)
-        json_modified = Enum.map(json, &add_flag(&1, 5))
-        render(conn, "recipe.json", %{recipes: json_modified})
+
+        render(conn, "stage.json", %{stages: json})
 
       {:ok, %{status_code: 404}} ->
         send_resp(conn, :not_found, "")
@@ -21,22 +21,25 @@ defmodule CraftbeerBffWeb.RecipeController do
     end
   end
 
-  def create(conn, %{"recipe_id" => recipe_id}) do
-    IO.puts("Recipe id #{recipe_id}")
+
+  def create(conn, %{"recipe_id" => recipe_id, "stage_id" => stage_id}) do
 
     url = "http://localhost:3000/craftbeer/recipe/cooking"
 
-
     body = Jason.encode!(%{
       recipe: String.to_integer(recipe_id),
-      state: "new",
+      stage_id: String.to_integer(stage_id),
+      type: 1,
+      start_time: "2021-16-10 16:00:00",
+      end_time: "2021-16-10 16:00:00",
+      state: "start",
     })
 
     headers = [{"Content-type", "application/json"}]
 
     case HTTPoison.post(url, body, headers, []) do
       {:ok, %{status_code: 201, body: body}} ->
-        render(conn, "recipe_cooking.json", %{recipes: body})
+        render(conn, "stage_cooking.json.json", %{recipes: body})
 
       {:ok, %{status_code: 404}} ->
         send_resp(conn, :not_found, "")
@@ -48,19 +51,6 @@ defmodule CraftbeerBffWeb.RecipeController do
         send_resp(conn, :internal_server_error, reason)
     end
 
-  end
-
-  defp add_flag(recipe, value) do
-
-    if Map.get(recipe, "id") == value do
-      Map.put(recipe, "status", "processing")
-    else
-      recipe
-    end
-
-
 
   end
-
-
 end
