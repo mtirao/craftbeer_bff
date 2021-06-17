@@ -36,6 +36,7 @@ defmodule CraftbeerBffWeb.RecipeController do
 
     case HTTPoison.post(url, body, headers, []) do
       {:ok, %{status_code: 201, body: body}} ->
+        clean_up(recipe_id)
         render(conn, "recipe_cooking.json", %{recipes: body})
 
       {:ok, %{status_code: 404}} ->
@@ -57,10 +58,22 @@ defmodule CraftbeerBffWeb.RecipeController do
     else
       recipe
     end
-
-
-
   end
 
+  defp clean_up(recipe_id) do
+    url = "http://localhost:3000//craftbeer/stages/cooking/recipe/#{recipe_id}"
+
+
+
+    case HTTPoison.delete(url) do
+      {:ok, %{status_code: 204}} -> :ok
+
+      {:ok, %{status_code: 404}} -> :not_found
+
+      {:ok, %{status_code: 400}} -> :bad_request
+
+      _ -> :internal_server_error
+    end
+  end
 
 end
