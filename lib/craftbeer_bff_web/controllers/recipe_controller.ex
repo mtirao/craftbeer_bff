@@ -56,7 +56,7 @@ defmodule CraftbeerBffWeb.RecipeController do
     if Map.get(recipe, "id") == value do
       Map.put(recipe, "status", "processing")
     else
-      recipe
+      Map.put(recipe, "status", "ready")
     end
   end
 

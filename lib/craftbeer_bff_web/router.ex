@@ -5,10 +5,10 @@ defmodule CraftbeerBffWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", CraftbeerBffWeb do
+  scope "/api/craftbeer", CraftbeerBffWeb do
     pipe_through :api
 
-    get "/recipe", RecipeController, :index
+    get "/recipes", RecipeController, :index
 
     get "/recipe/:recipe_id/stages", StageController, :index
 
