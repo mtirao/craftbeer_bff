@@ -4,7 +4,7 @@ defmodule CraftbeerBffWeb.RecipeController do
   require Logger
 
   def index(conn, _params) do
-    url = "http://localhost:3000/craftbeer/recipes"
+    url = "http://localhost:3000/api/craftbeer/recipes"
 
 
     case HTTPoison.get(url) do
@@ -24,7 +24,7 @@ defmodule CraftbeerBffWeb.RecipeController do
   def create(conn, %{"recipe_id" => recipe_id}) do
     IO.puts("Recipe id #{recipe_id}")
 
-    url = "http://localhost:3000/craftbeer/recipe/cooking"
+    url = "http://localhost:3000/api/craftbeer/recipe/cooking"
 
 
     body = Jason.encode!(%{
@@ -61,7 +61,7 @@ defmodule CraftbeerBffWeb.RecipeController do
   end
 
   defp clean_up(recipe_id) do
-    url = "http://localhost:3000//craftbeer/stages/cooking/recipe/#{recipe_id}"
+    url = "http://localhost:3000/api/craftbeer/stages/cooking/recipe/#{recipe_id}"
 
 
 
